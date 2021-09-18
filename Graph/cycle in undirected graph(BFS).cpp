@@ -1,4 +1,4 @@
-#include<bits/stdc++.h>
+x#include<bits/stdc++.h>
 using namespace std;
 class Solution 
 { bool check(int s,vector<int>adj[],vector<int>&vis,int v)
