@@ -1,0 +1,32 @@
+struct node{
+    node *link[26];
+    bool find(char ch)
+    {
+        return(link[ch-'a']!=NULL);
+    }
+    void put(char ch,node *n)
+    {
+        link[ch-'a']=n;
+    }
+    node * get(char ch){
+        return link[ch-'a'];
+    }
+};
+int countDistinctSubstrings(string &s)
+{
+    //    Write your code here.
+    node*root=new node();
+    int c=0;
+        for(int i=0;i<s.length();i++)
+        {   node*l=root;
+            for(int j=i;j<s.length();j++){
+            if(!l->find(s[j]))
+            {
+                l->put(s[j],new node());
+                c++;
+            }
+            l=l->get(s[j]);
+           }
+        }
+    return c+1;
+}

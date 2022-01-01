@@ -1,0 +1,64 @@
+struct node{
+    node *link[2];
+    bool find(int i)
+    {
+        return (link[i]!=NULL);
+    }
+    void put(int i,node *n)
+    {
+        link[i]=n;
+    }
+    node*get(int i)
+    {
+        return link[i];
+    }
+};
+class Trie{
+  node*root;
+    public:
+    Trie()
+    {
+        root=new node();
+    }
+    void insert(int num)
+    {  
+        node* n = root; 
+        for(int i = 31;i>=0;i--) {
+            int bit = (num >> i) & 1; 
+            if(!n->find(bit)) {
+                n->put(bit, new node()); 
+            }
+            n = n->get(bit); 
+        }
+    }
+    int maxi(int num){
+        node* n = root;
+        int maxNum=0;
+        for(int i = 31;i>=0;i--) {
+            int bit = (num >> i) & 1; 
+            if(n->find(!bit)) {
+                maxNum = maxNum | (1<<i); 
+                n = n->get(!bit);
+            }
+            else{
+            n = n->get(bit); 
+            }
+        }
+        return maxNum;
+    }
+};
+
+
+int maxXOR(int n, int m, vector<int> &arr1, vector<int> &arr2) 
+{
+    // Write your code here.
+     Trie trie; 
+    for(int i = 0;i<n;i++) {
+        trie.insert(arr1[i]); 
+    }
+    int maxi = 0;
+    for(int i = 0;i<m;i++) {
+        maxi = max(maxi, trie.maxi(arr2[i])); 
+    }
+    return maxi; 
+}

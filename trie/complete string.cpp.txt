@@ -1,0 +1,82 @@
+struct Node{
+         Node *arr[26];
+        bool f=false; 
+       bool contain(char s)
+       {
+           return (arr[s-'a']!=NULL);
+       }
+      void put(char ch,Node *node)
+      {
+          arr[ch-'a']=node;
+      }
+    Node * get(char ch)
+    {
+        return arr[ch-'a'];
+    }
+    void endword()
+    {
+        f=true;
+    }
+    bool isend() {
+        return f; 
+    }
+    
+    };
+class Trie {
+Node *root;
+public:
+    Trie() {
+    root= new Node();
+
+    }
+    void insert(string word) {
+        Node *l=root;
+        for(int i=0;i<word.length();i++)
+        {
+            if(!l->contain(word[i]))
+            {
+                l->put(word[i],new Node());
+            }
+            l=l->get(word[i]);
+        }
+        l->endword();
+}
+    bool checkprefix(string word){
+        Node*l=root;
+        bool flag=true;
+        for(int i=0;i<word.length();i++)
+        {
+            if(l->contain(word[i]))
+            { l=l->get(word[i]);
+                flag=flag&l->isend();
+            }
+            else{
+                return false;
+            }
+        }
+        return flag;
+    }
+};
+
+string completeString(int n, vector<string> &a){
+    // Write your code here.
+    Trie *obj=new Trie();
+    string longest="";
+    for (auto word:a){obj->insert(word);}
+    for(auto word:a)
+    {
+        if(obj->checkprefix(word))
+        {
+            if(word.size() > longest.size()) {
+                longest = word; 
+            }
+            else if(word.size() == longest.size() && word < longest) {
+                longest = word; 
+            }
+        }
+    }
+    if(longest == "") return "None"; 
+    return longest; 
+   
+    
+}
